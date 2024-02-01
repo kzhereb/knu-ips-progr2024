@@ -20,17 +20,16 @@ int main() {
 
   // create list  [1, 3, 5]
 
-  start->value = 1;
-  //start->prev = new Node;
   start->prev = nullptr;
+  start->value = 1;
   start->next = new Node;
-  start->next->value = 3;
+
   start->next->prev = start;
+  start->next->value = 3;
   start->next->next = end;
- // end->prev = new Node;
-  //end->next = new Node;
-  end->value = 5;
+
   end->prev = start->next;
+  end->value = 5;
   end->next = nullptr;
 
   std::cout<<"middle from start " << start->next->value<<"\n";
