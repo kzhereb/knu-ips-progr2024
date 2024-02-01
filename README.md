@@ -8,3 +8,4 @@ It can be edited with GitHub web interface, but for source code files this is **
 Different ways of editing locally
 * using command-line git client
 * using GUI git client (such as GitExtensions)
+* using IDE with git integration (in this case Eclipse)
