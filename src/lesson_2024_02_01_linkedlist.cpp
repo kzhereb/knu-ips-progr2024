@@ -6,6 +6,7 @@
  */
 
 #include <iostream>
+#include <iomanip>
 
 
 struct Node {
@@ -14,9 +15,17 @@ struct Node {
   Node* next;
 };
 
+bool search(Node* start, int value) {
+  while(start) {
+    if (start->value == value) { return true; }
+    start = start->next;
+  }
+  return false;
+}
+
 int main() {
 
-  for(int i=0; i < 1000000; i++) {
+
   Node* start = new Node;
   Node* end = new Node;
 
@@ -34,23 +43,15 @@ int main() {
   end->value = 5;
   end->next = nullptr;
 
+
+  std::cout<<"middle from start " << start->next->value<<"\n";
+  std::cout<<"middle from end " << end->prev->value<<std::endl;
+
+  std::cout<<"searching for 3, result="<<std::boolalpha<<search(start, 5)<<std::endl;
+
   delete start;
   delete end->prev;
   delete end;
-  }
-//  std::cout<<"middle from start " << start->next->value<<"\n";
-//  std::cout<<"middle from end " << end->prev->value<<std::endl;
-//  std::cout<<"sizeof pointer " << sizeof(start)<<std::endl;
-//  std::cout<<"sizeof struct " << sizeof(*start)<<std::endl;
-//  std::cout<<"sizeof int " << sizeof(start->value)<<std::endl;
-//  std::cout<<"sizeof pointer " << sizeof(Node*)<<std::endl;
-//  std::cout<<"sizeof struct " << sizeof(Node)<<std::endl;
-//  std::cout<<"sizeof int " << sizeof(int)<<std::endl;
-//  //std::cout<<"sizeof start->next " << sizeof(start->next)<<std::endl;
-//
-
-
-  while(true) { }
 
 
   return 0;
