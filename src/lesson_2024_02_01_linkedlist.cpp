@@ -15,6 +15,8 @@ struct Node {
 };
 
 int main() {
+
+  //for(int i=0; i < )
   Node* start = new Node;
   Node* end = new Node;
 
@@ -34,6 +36,21 @@ int main() {
 
   std::cout<<"middle from start " << start->next->value<<"\n";
   std::cout<<"middle from end " << end->prev->value<<std::endl;
+  std::cout<<"sizeof pointer " << sizeof(start)<<std::endl;
+  std::cout<<"sizeof struct " << sizeof(*start)<<std::endl;
+  std::cout<<"sizeof int " << sizeof(start->value)<<std::endl;
+  std::cout<<"sizeof pointer " << sizeof(Node*)<<std::endl;
+  std::cout<<"sizeof struct " << sizeof(Node)<<std::endl;
+  std::cout<<"sizeof int " << sizeof(int)<<std::endl;
+  //std::cout<<"sizeof start->next " << sizeof(start->next)<<std::endl;
+
+  delete start;
+  delete end->prev;
+  delete end;
+
+  while(true) { }
+
+
   return 0;
 
 }
