@@ -29,7 +29,20 @@ void push_back(Node* start, int value){
   }
   Node* new_node = new Node;
   new_node->value = value;
+  new_node->next = nullptr;
+  new_node->prev = start;
   start->next = new_node;
+}
+
+void print(Node* start)
+{
+    Node *current = start;
+    while(current != nullptr)
+    {
+        std::cout << current->value << " ";
+        current = current -> next;
+    }
+    std::cout << std::endl;
 }
 
 int main() {
@@ -56,10 +69,16 @@ int main() {
   std::cout<<"middle from start " << start->next->value<<"\n";
   std::cout<<"middle from end " << end->prev->value<<std::endl;
 
+  print(start);
+
   std::cout<<"searching for 2, result="<<std::boolalpha<<search(start, 2)<<std::endl;
   std::cout<<"searching for 5, result="<<std::boolalpha<<search(start, 5)<<std::endl;
 
+  std::cout<<"push back 7, start="<<start<<std::endl;
   push_back(start, 7);
+  std::cout<<"last item is "<< end->value<<", start="<<start<<std::endl;
+  std::cout<<"printing..."<<std::endl;
+  print(start);
 
   delete start;
   delete end->prev;
