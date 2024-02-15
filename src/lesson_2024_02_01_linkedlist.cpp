@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <iomanip>
+#include <cassert>
 
 
 struct Node {
@@ -47,8 +48,46 @@ void pop_back(Node*& end) {
   end->next = nullptr;
 }
 
+// returns inserted node, or nullptr if insert_after_me was not found in list
+Node* insert(Node* start, Node* insert_after_me, int value) {
+  while(start != insert_after_me && start != nullptr) {
+    start = start->next;
+  }
+  if (start == nullptr) {
+    return nullptr;
+  }
+  Node* new_node = new Node(value, start, start->next);
+  start->next = new_node;
+  new_node->next->prev = new_node;
+  return new_node;
+}
+// position identifies place between existing items: 0 = before start, 1 - after first item, ...
+// returns inserted node, or nullptr if position is larger than size of list
+Node* insert(Node* start, int position, int value) {
+  if (position == 0) {
+    Node* new_start = new Node(value,nullptr,start);
+    start->prev = new_start;
+    return new_start;
+  }
+  int current_position = 0;
+  while(start != nullptr && current_position < position - 1) {
+    start = start->next;
+    current_position++;
+  }
+  std::cout<<"current_position="<<current_position<<std::endl;
+  if (start == nullptr) {
+    return nullptr;
+  }
+  std::cout<<"start value "<<start->value<<std::endl;
+  Node* new_node = new Node(value, start, start->next);
+  assert(new_node->next == start->next);
+  //std::cout<<new_node->next<<std::endl;
+  start->next = new_node;
+  new_node->next->prev = new_node;
+  return new_node;
+}
+
 //
-// insert
 // remove (from middle)
 // deconstructor? (remove all items, free memory)
 
@@ -88,6 +127,15 @@ int main() {
 
   std::cout<<"pop back"<<std::endl;
   pop_back(end);
+  print(start);
+
+  std::cout<<"insert in middle, after 3 (position 2)"<<std::endl;
+  Node* inserted = insert(start, 2, 123);
+  if (inserted) {
+    std::cout<<"inserted value "<<inserted->value<<std::endl;
+  } else {
+    std::cout<<"not inserted"<<std::endl;
+  }
   print(start);
 
   delete start;
