@@ -40,6 +40,18 @@ void push_back( Node*& end, int value){
   end = new_node;
 }
 
+void pop_back(Node*& end) {
+  Node* new_end = end->prev;
+  delete end;
+  end = new_end;
+  end->next = nullptr;
+}
+
+//
+// insert
+// remove (from middle)
+// deconstructor? (remove all items, free memory)
+
 void print(Node* start)
 {
     Node *current = start;
@@ -72,6 +84,10 @@ int main() {
   push_back( end, 7);
   std::cout<<"last item is "<< end->value<<", start="<<start<<std::endl;
   std::cout<<"printing..."<<std::endl;
+  print(start);
+
+  std::cout<<"pop back"<<std::endl;
+  pop_back(end);
   print(start);
 
   delete start;
