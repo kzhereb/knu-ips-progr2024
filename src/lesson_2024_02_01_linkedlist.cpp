@@ -16,11 +16,13 @@ struct Node {
 
   //Node() = default;
 
-  Node(int value_el, Node* prev_el = nullptr, Node* next_el = nullptr) {
-    value = value_el;
-    prev = prev_el;
-    next = next_el;
-  }
+//  Node(int value, Node* prev = nullptr, Node* next = nullptr) {
+//    this->value = value;
+//    this->prev = prev;
+//    this->next = next;
+//  }
+
+  Node(int value, Node* prev = nullptr, Node* next = nullptr): value(value), prev(prev), next(next) { }
 };
 
 bool search(Node* start, int value) {
