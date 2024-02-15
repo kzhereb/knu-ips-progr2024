@@ -23,7 +23,7 @@ bool search(Node* start, int value) {
   return false;
 }
 
-void push_back(Node* start, int value){
+void push_back(Node* start, Node*& end, int value){
   while(start->next) {
     start = start->next;
   }
@@ -32,6 +32,8 @@ void push_back(Node* start, int value){
   new_node->next = nullptr;
   new_node->prev = start;
   start->next = new_node;
+
+  end = new_node;
 }
 
 void print(Node* start)
@@ -75,7 +77,7 @@ int main() {
   std::cout<<"searching for 5, result="<<std::boolalpha<<search(start, 5)<<std::endl;
 
   std::cout<<"push back 7, start="<<start<<std::endl;
-  push_back(start, 7);
+  push_back(start, end, 7);
   std::cout<<"last item is "<< end->value<<", start="<<start<<std::endl;
   std::cout<<"printing..."<<std::endl;
   print(start);
