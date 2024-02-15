@@ -13,6 +13,14 @@ struct Node {
   int value;
   Node* prev;
   Node* next;
+
+  //Node() = default;
+
+  Node(int value_el, Node* prev_el = nullptr, Node* next_el = nullptr) {
+    value = value_el;
+    prev = prev_el;
+    next = next_el;
+  }
 };
 
 bool search(Node* start, int value) {
@@ -27,10 +35,7 @@ void push_back(Node* start, Node*& end, int value){
   while(start->next) {
     start = start->next;
   }
-  Node* new_node = new Node;
-  new_node->value = value;
-  new_node->next = nullptr;
-  new_node->prev = start;
+  Node* new_node = new Node(value, start);
   start->next = new_node;
 
   end = new_node;
@@ -49,24 +54,12 @@ void print(Node* start)
 
 int main() {
 
-
-  Node* start = new Node;
-  Node* end = new Node;
-
   // create list  [1, 3, 5]
+  Node* start = new Node(1);
+  start->next = new Node(3, start);
 
-  start->prev = nullptr;
-  start->value = 1;
-  start->next = new Node;
-
-  start->next->prev = start;
-  start->next->value = 3;
+  Node* end = new Node(5, start->next);
   start->next->next = end;
-
-  end->prev = start->next;
-  end->value = 5;
-  end->next = nullptr;
-
 
   std::cout<<"middle from start " << start->next->value<<"\n";
   std::cout<<"middle from end " << end->prev->value<<std::endl;
