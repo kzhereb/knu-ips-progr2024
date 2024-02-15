@@ -74,16 +74,15 @@ Node* insert(Node* start, int position, int value) {
     start = start->next;
     current_position++;
   }
-  std::cout<<"current_position="<<current_position<<std::endl;
   if (start == nullptr) {
     return nullptr;
   }
-  std::cout<<"start value "<<start->value<<std::endl;
   Node* new_node = new Node(value, start, start->next);
   assert(new_node->next == start->next);
-  //std::cout<<new_node->next<<std::endl;
   start->next = new_node;
-  new_node->next->prev = new_node;
+  if (new_node->next != nullptr) {
+    new_node->next->prev = new_node;
+  }
   return new_node;
 }
 
@@ -137,6 +136,16 @@ int main() {
     std::cout<<"not inserted"<<std::endl;
   }
   print(start);
+
+  std::cout<<"insert at the end, after 5 (position 4)"<<std::endl;
+  inserted = insert(start, 4, 456);
+  if (inserted) {
+    std::cout<<"inserted value "<<inserted->value<<std::endl;
+  } else {
+    std::cout<<"not inserted"<<std::endl;
+  }
+  print(start);
+
 
   delete start;
   delete end->prev;
