@@ -102,6 +102,7 @@ bool remove(Node*& start, Node*& end, int position) {
   current->prev->next = current->next;
   current->next->prev = current->prev;
   delete current;
+  return true;
 
 }
 
