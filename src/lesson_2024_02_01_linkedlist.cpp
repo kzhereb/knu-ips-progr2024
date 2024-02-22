@@ -97,7 +97,11 @@ Node* insert(Node* start, int position, int value) {
 }
 
 bool remove(Node*& start, Node*& end, int position) {
-  if (position<0) {return false;}
+  Node* current = find_by_position(start, position);
+  if (current == nullptr) { return false;}
+  current->prev->next = current->next;
+  current->next->prev = current->prev;
+  delete current;
 
 }
 
@@ -168,6 +172,10 @@ int main() {
   } else {
     std::cout<<"not found"<<std::endl;
   }
+
+  std::cout<<"removing at position 2"<<std::endl;
+  std::cout<<std::boolalpha<<remove(start, end, 2)<<std::endl;
+  print(start);
 
 
   delete start;
