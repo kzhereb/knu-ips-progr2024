@@ -73,25 +73,30 @@ Node* find_by_position(Node* start, int position) {
 
 // position identifies place between existing items: 0 = before start, 1 - after first item, ...
 // returns inserted node, or nullptr if position is larger than size of list
-Node* insert(Node* start, int position, int value) {
+Node* insert(Node*& start, Node*& end, int position, int value) {
   if (position == 0) {
     Node* new_start = new Node(value,nullptr,start);
     start->prev = new_start;
+    start = new_start;
     return new_start;
   }
+  Node* current = start;
   int current_position = 0;
-  while(start != nullptr && current_position < position - 1) {
-    start = start->next;
+  while(current != nullptr && current_position < position - 1) {
+    current = current->next;
     current_position++;
   }
-  if (start == nullptr) {
+  if (current == nullptr) {
     return nullptr;
   }
-  Node* new_node = new Node(value, start, start->next);
-  assert(new_node->next == start->next);
-  start->next = new_node;
+  Node* new_node = new Node(value, current, current->next);
+  assert(new_node->next == current->next);
+  current->next = new_node;
   if (new_node->next != nullptr) {
     new_node->next->prev = new_node;
+  } else {
+    assert(current == end);
+    end = new_node;
   }
   return new_node;
 }
@@ -131,6 +136,11 @@ void print(Node* start)
     std::cout << std::endl;
 }
 
+void print(Node* start, Node* end) {
+  print(start);
+  std::cout<<"end value="<<end->value<<std::endl;
+}
+
 int main() {
 
   // create list  [1, 3, 5]
@@ -143,7 +153,7 @@ int main() {
   std::cout<<"middle from start " << start->next->value<<"\n";
   std::cout<<"middle from end " << end->prev->value<<std::endl;
 
-  print(start);
+  print(start, end);
 
   std::cout<<"searching for 2, result="<<std::boolalpha<<search(start, 2)<<std::endl;
   std::cout<<"searching for 5, result="<<std::boolalpha<<search(start, 5)<<std::endl;
@@ -152,29 +162,38 @@ int main() {
   push_back( end, 7);
   std::cout<<"last item is "<< end->value<<", start="<<start<<std::endl;
   std::cout<<"printing..."<<std::endl;
-  print(start);
+  print(start, end);
 
   std::cout<<"pop back"<<std::endl;
   pop_back(end);
-  print(start);
+  print(start, end);
 
   std::cout<<"insert in middle, after 3 (position 2)"<<std::endl;
-  Node* inserted = insert(start, 2, 123);
+  Node* inserted = insert(start, end,  2, 123);
   if (inserted) {
     std::cout<<"inserted value "<<inserted->value<<std::endl;
   } else {
     std::cout<<"not inserted"<<std::endl;
   }
-  print(start);
+  print(start, end);
 
   std::cout<<"insert at the end, after 5 (position 4)"<<std::endl;
-  inserted = insert(start, 4, 456);
+  inserted = insert(start, end, 4, 456);
   if (inserted) {
     std::cout<<"inserted value "<<inserted->value<<std::endl;
   } else {
     std::cout<<"not inserted"<<std::endl;
   }
-  print(start);
+  print(start, end);
+
+  std::cout<<"insert at the start (position 0)"<<std::endl;
+  inserted = insert(start, end, 0, 789);
+  if (inserted) {
+    std::cout<<"inserted value "<<inserted->value<<std::endl;
+  } else {
+    std::cout<<"not inserted"<<std::endl;
+  }
+  print(start, end);
 
   std::cout<<"find at position 2"<<std::endl;
   Node* found = find_by_position(start, 2);
@@ -186,11 +205,11 @@ int main() {
 
   std::cout<<"removing at position 2"<<std::endl;
   std::cout<<std::boolalpha<<remove(start, end, 2)<<std::endl;
-  print(start);
+  print(start, end);
 
   std::cout<<"removing at start (position 0)"<<std::endl;
   std::cout<<std::boolalpha<<remove(start, end, 0)<<std::endl;
-  print(start);
+  print(start, end);
 
   //assert(start != end->prev);
 
@@ -198,7 +217,7 @@ int main() {
   delete start;
   //std::cout<<"end->prev value="<<end->prev->value<<std::endl;
 
-  //delete end->prev;
+  delete end->prev;
   std::cout<<"end value="<<end->value<<std::endl;
   delete end;
 
