@@ -61,6 +61,16 @@ Node* insert(Node* start, Node* insert_after_me, int value) {
   new_node->next->prev = new_node;
   return new_node;
 }
+// position starts from 0 (start of list)
+// returns pointer to node at this position, or nullptr if not found
+Node* find_by_position(Node* start, int position) {
+  if (position<0) {return nullptr;}
+  for(int i=0; i<position && start!= nullptr; ++i ) {
+    start = start->next;
+  }
+  return start;
+}
+
 // position identifies place between existing items: 0 = before start, 1 - after first item, ...
 // returns inserted node, or nullptr if position is larger than size of list
 Node* insert(Node* start, int position, int value) {
@@ -84,6 +94,11 @@ Node* insert(Node* start, int position, int value) {
     new_node->next->prev = new_node;
   }
   return new_node;
+}
+
+bool remove(Node*& start, Node*& end, int position) {
+  if (position<0) {return false;}
+
 }
 
 //
@@ -145,6 +160,14 @@ int main() {
     std::cout<<"not inserted"<<std::endl;
   }
   print(start);
+
+  std::cout<<"find at position 2"<<std::endl;
+  Node* found = find_by_position(start, 2);
+  if (found) {
+    std::cout<<"found node with value="<<found->value<<std::endl;
+  } else {
+    std::cout<<"not found"<<std::endl;
+  }
 
 
   delete start;
