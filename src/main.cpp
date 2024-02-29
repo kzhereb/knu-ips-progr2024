@@ -5,7 +5,7 @@
  *      Author: KZ
  */
 
-#define current_ns lesson_2024_02_01_linkedlist
+#define current_ns lesson_2024_02_29_linkedlist_struct
 
 namespace current_ns {
   int main();
