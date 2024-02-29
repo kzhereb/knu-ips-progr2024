@@ -45,6 +45,7 @@ bool search(Node* start, int value) {
 }
 
 void push_back(LinkedList& list, int value){
+  if (list.end == nullptr) {return;}
   Node* new_node = new Node(value, list.end);
   list.end->next = new_node;
 
@@ -150,7 +151,11 @@ void print(Node* start)
 
 void print(LinkedList list) {
   print(list.start);
-  std::cout<<"end value="<<list.end->value<<std::endl;
+  if (list.end) {
+    std::cout<<"end value="<<list.end->value<<std::endl;
+  } else {
+    std::cout<<"list was empty"<<std::endl;
+  }
 }
 
 void check_memory_leaks() {
@@ -242,6 +247,16 @@ int main() {
 
   remove_all(start); //TODO: fix this call, it should free all memory and not crash
   assert(start == nullptr);
+
+
+  LinkedList list2;
+  std::cout<<"printing empty list"<<std::endl;
+  print(list2);
+
+  std::cout<<"pushing 1234 into empty list"<<std::endl;
+  push_back(list2, 1234);
+  print(list2);
+
 
   //check_memory_leaks(); // uncomment to check that remove_all actually frees all memory
 
