@@ -32,6 +32,8 @@ struct Node {
 struct LinkedList {
   Node* start;
   Node* end;
+
+  LinkedList(Node* start = nullptr, Node* end = nullptr): start(start), end(end) {}
 };
 
 bool search(Node* start, int value) {
@@ -177,9 +179,8 @@ int main() {
   std::cout<<"middle from start " << start->next->value<<"\n";
   std::cout<<"middle from end " << end->prev->value<<std::endl;
 
-  LinkedList list;
-  list.start = start;
-  list.end = end;
+  LinkedList list(start, end);
+
 
   print(list);
 
