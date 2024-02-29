@@ -122,15 +122,26 @@ bool remove(Node*& start, Node*& end, int position) {
 
 }
 
-void remove_all(Node* start) {
-  std::cout<<"Remove all called, value="<<start->value<<std::endl;
+//void remove_all(Node* start) {
+//  std::cout<<"Remove all called, value="<<start->value<<std::endl;
+//  Node* current = start;
+//  while(current != nullptr) {
+//    current = current->next;
+//    delete current->prev;
+//
+//  }
+//}
+
+void remove_all(Node*& start) {
   Node* current = start;
   while(current != nullptr) {
-    current = current->next;
-    delete current->prev;
-
+    Node* next = current->next;
+    delete current;
+    current = next;
   }
+  start = nullptr;
 }
+
 //
 // remove (from middle)
 // deconstructor? (remove all items, free memory)
@@ -221,7 +232,8 @@ int main() {
   std::cout<<std::boolalpha<<remove(start, end, 0)<<std::endl;
   print(start, end);
 
-  //remove_all(start); //TODO: fix this call, it should free all memory and not crash
+  remove_all(start); //TODO: fix this call, it should free all memory and not crash
+  assert(start == nullptr);
 
   //assert(start != end->prev);
 
