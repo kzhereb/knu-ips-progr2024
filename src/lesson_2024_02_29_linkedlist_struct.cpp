@@ -45,17 +45,14 @@ bool search(Node* start, int value) {
 }
 
 void push_back(LinkedList& list, int value){
-
   Node* new_node = new Node(value, list.end);
   if (list.end == nullptr) {
     assert(new_node->prev == nullptr);
-    list.end = new_node;
     list.start = new_node;
   } else {
     list.end->next = new_node;
-
-    list.end = new_node;
   }
+  list.end = new_node;
 }
 
 void pop_back(Node*& end) {
