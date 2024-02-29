@@ -9,6 +9,7 @@
 #include <iomanip>
 #include <cassert>
 
+namespace lesson_2024_02_01_linkedlist {
 
 struct Node {
   int value;
@@ -255,4 +256,4 @@ int hello() {
   return 0;
 }
 
-
+}
