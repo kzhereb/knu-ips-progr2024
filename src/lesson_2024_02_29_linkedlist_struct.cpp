@@ -42,11 +42,11 @@ bool search(Node* start, int value) {
   return false;
 }
 
-void push_back( Node*& end, int value){
-  Node* new_node = new Node(value, end);
-  end->next = new_node;
+void push_back(LinkedList& list, int value){
+  Node* new_node = new Node(value, list.end);
+  list.end->next = new_node;
 
-  end = new_node;
+  list.end = new_node;
 }
 
 void pop_back(Node*& end) {
@@ -155,9 +155,10 @@ void check_memory_leaks() {
   for(int i=0; i<1e6; i++) {
     Node* start = new Node(1);
     Node* end = start;
-    push_back(end, 3);
-    push_back(end, 5);
-    push_back(end, 123);
+    LinkedList list {start,end};
+    push_back(list, 3);
+    push_back(list, 5);
+    push_back(list, 123);
     remove_all(start);
     assert(start == nullptr);
   }
@@ -186,7 +187,7 @@ int main() {
   std::cout<<"searching for 5, result="<<std::boolalpha<<search(start, 5)<<std::endl;
 
   std::cout<<"push back 7, start="<<start<<std::endl;
-  push_back( end, 7);
+  push_back( list, 7);
   std::cout<<"last item is "<< end->value<<", start="<<start<<std::endl;
   std::cout<<"printing..."<<std::endl;
   print(list);
