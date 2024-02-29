@@ -122,16 +122,6 @@ bool remove(Node*& start, Node*& end, int position) {
 
 }
 
-//void remove_all(Node* start) {
-//  std::cout<<"Remove all called, value="<<start->value<<std::endl;
-//  Node* current = start;
-//  while(current != nullptr) {
-//    current = current->next;
-//    delete current->prev;
-//
-//  }
-//}
-
 void remove_all(Node*& start) {
   Node* current = start;
   while(current != nullptr) {
@@ -141,10 +131,6 @@ void remove_all(Node*& start) {
   }
   start = nullptr;
 }
-
-//
-// remove (from middle)
-// deconstructor? (remove all items, free memory)
 
 void print(Node* start)
 {
@@ -160,6 +146,19 @@ void print(Node* start)
 void print(Node* start, Node* end) {
   print(start);
   std::cout<<"end value="<<end->value<<std::endl;
+}
+
+void check_memory_leaks() {
+  for(int i=0; i<1e6; i++) {
+    Node* start = new Node(1);
+    Node* end = start;
+    push_back(end, 3);
+    push_back(end, 5);
+    push_back(end, 123);
+    remove_all(start);
+    assert(start == nullptr);
+  }
+  while(true) {}
 }
 
 int main() {
@@ -234,6 +233,8 @@ int main() {
 
   remove_all(start); //TODO: fix this call, it should free all memory and not crash
   assert(start == nullptr);
+
+  //check_memory_leaks(); // uncomment to check that remove_all actually frees all memory
 
   //assert(start != end->prev);
 
