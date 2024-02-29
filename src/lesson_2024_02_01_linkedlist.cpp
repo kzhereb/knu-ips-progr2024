@@ -81,17 +81,13 @@ Node* insert(Node*& start, Node*& end, int position, int value) {
     start = new_start;
     return new_start;
   }
-  Node* current = start;
-  int current_position = 0;
-  while(current != nullptr && current_position < position - 1) {
-    current = current->next;
-    current_position++;
-  }
+
+  Node* current = find_by_position(start, position - 1);
   if (current == nullptr) {
     return nullptr;
   }
+
   Node* new_node = new Node(value, current, current->next);
-  assert(new_node->next == current->next);
   current->next = new_node;
   if (new_node->next != nullptr) {
     new_node->next->prev = new_node;
