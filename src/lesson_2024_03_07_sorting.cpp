@@ -28,6 +28,9 @@ void print_array(int* array, size_t size, size_t items_to_print = 5) {
   std::cout<<"size="<<size<<std::endl;
 }
 
+// returns pair: min_value, index
+//std::pair<int, size_t> find_min(int* array, size_t size)
+
 int* square_selection_sort(int* array, size_t size) {
   int* sorted = new int[size];
   size_t block_size = std::sqrt(size); // |B_i| in slides
