@@ -68,10 +68,14 @@ int* square_selection_sort(int* array, size_t size) {
 
   for (size_t i = 0; i < num_blocks; i++) {
     //int min_value = ???
-    for(size_t j = i*block_size; j < (i+1)*block_size; j++) {
+    size_t block_start = i*block_size;
+    size_t index;
+    min_in_block[i] = find_min(array + block_start, block_size, index );
 
-    }
   }
+
+  print_array(min_in_block, num_blocks);
+
 
 
   //print_array(sorted, size);
@@ -112,6 +116,7 @@ int main() {
   min_value = find_min(array2+4, 4 /*7+1-4*/, min_index);
   std::cout<<"Min item in subarray using find_min "<<min_value<<" at position "<<min_index+4<<std::endl;
 
+  square_selection_sort(array2, 9); // ignore last item, we need size that is full square
 
   return 0;
 }
