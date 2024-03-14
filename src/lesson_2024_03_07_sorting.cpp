@@ -44,6 +44,20 @@ int find_min(int *arr, size_t arr_size, size_t &index) {
 
   return min_value;
 }
+// finds min value in subarray from start (inclusive) to end (inclusive)
+int find_min_subarray(int *arr, size_t start, size_t end, size_t &index) {
+  int min_value = arr[start];
+  index = start;
+
+  for (size_t i = start+1; i <= end; ++i) {
+    if (arr[i] < min_value) {
+      min_value = arr[i];
+      index = i;
+    }
+  }
+
+  return min_value;
+}
 
 int* square_selection_sort(int* array, size_t size) {
   int* sorted = new int[size];
@@ -76,6 +90,8 @@ int main() {
   size_t min_index=0;
   int min_value = find_min(array2, size2, min_index);
   std::cout<<"Min item "<<min_value<<" at position "<<min_index<<std::endl;
+  min_value = find_min_subarray(array2, 4, 7, min_index);
+  std::cout<<"Min item in subarray "<<min_value<<" at position "<<min_index<<std::endl;
   return 0;
 }
 
