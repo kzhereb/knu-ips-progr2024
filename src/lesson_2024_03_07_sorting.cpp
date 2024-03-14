@@ -78,13 +78,23 @@ int* square_selection_sort(int* array, size_t size) {
   return sorted;
 }
 
+void array_syntax_demo(int array2[]) {
+  assert(array2 + 1 == &array2[1]);
+  assert(*(array2 + 1) == array2[1]);
+  assert(*(1 + array2) == array2[1]);
+  assert(*(1 + array2) == 1[array2]);
+  assert(array2[1] == 1[array2]);
+  std::cout << array2[2] << " " << 2[array2] << std::endl; // never do this in real code :)
+}
 
 int main() {
   int* array = new int[100];
   print_array(array, 100);
+  size_t size = (sizeof array) / (sizeof array[0]);
+  std::cout<<size<<std::endl;
 
   //[3, 7, 12, 1, 8, 2, 5, 123, 1, 42]
-  int array2[] = {3, 7, 12, 1, 8, 2, 5, 123, 1, 42};
+  int array2[] = {-3, 7, 12, 1, 8, 2, 5, 123, 1, 42};
   size_t size2 = (sizeof array2) / (sizeof array2[0]);
   std::cout<<size2<<std::endl;
   size_t min_index=0;
@@ -92,6 +102,17 @@ int main() {
   std::cout<<"Min item "<<min_value<<" at position "<<min_index<<std::endl;
   min_value = find_min_subarray(array2, 4, 7, min_index);
   std::cout<<"Min item in subarray "<<min_value<<" at position "<<min_index<<std::endl;
+
+  min_value = find_min(&(array2[1]), size2-1, min_index);
+  std::cout<<"Min item "<<min_value<<" at position "<<min_index<<std::endl;
+
+  min_value = find_min(array2+1, size2-1, min_index);
+  std::cout<<"Min item "<<min_value<<" at position "<<min_index<<std::endl;
+
+  min_value = find_min(array2+4, 4 /*7+1-4*/, min_index);
+  std::cout<<"Min item in subarray using find_min "<<min_value<<" at position "<<min_index+4<<std::endl;
+
+
   return 0;
 }
 
