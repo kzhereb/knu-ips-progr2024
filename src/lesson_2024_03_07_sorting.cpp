@@ -31,6 +31,20 @@ void print_array(int* array, size_t size, size_t items_to_print = 5) {
 // returns pair: min_value, index
 //std::pair<int, size_t> find_min(int* array, size_t size)
 
+int find_min(int *arr, size_t arr_size, size_t &index) {
+  int min_value = arr[0];
+  index = 0;
+
+  for (size_t i = 1; i < arr_size; ++i) {
+    if (arr[i] < min_value) {
+      min_value = arr[i];
+      index = i;
+    }
+  }
+
+  return min_value;
+}
+
 int* square_selection_sort(int* array, size_t size) {
   int* sorted = new int[size];
   size_t block_size = std::sqrt(size); // |B_i| in slides
@@ -54,6 +68,14 @@ int* square_selection_sort(int* array, size_t size) {
 int main() {
   int* array = new int[100];
   print_array(array, 100);
+
+  //[3, 7, 12, 1, 8, 2, 5, 123, 1, 42]
+  int array2[] = {3, 7, 12, 1, 8, 2, 5, 123, 1, 42};
+  size_t size2 = (sizeof array2) / (sizeof array2[0]);
+  std::cout<<size2<<std::endl;
+  size_t min_index=0;
+  int min_value = find_min(array2, size2, min_index);
+  std::cout<<"Min item "<<min_value<<" at position "<<min_index<<std::endl;
   return 0;
 }
 
