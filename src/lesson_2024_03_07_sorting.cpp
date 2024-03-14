@@ -8,10 +8,28 @@
 #include <iostream>
 #include <cmath>
 #include <cassert>
+#include <climits>
 
 namespace lesson_2024_03_07_sorting {
 
 void print_array(int* array, size_t size, size_t items_to_print = 5) {
+  if (size <= items_to_print*2) {
+    for(size_t i = 0; i<size; i++) {
+      std::cout<<array[i]<<" ";
+    }
+  } else {
+    for(size_t i = 0; i < items_to_print; i++) {
+      std::cout<<array[i]<<" ";
+    }
+    std::cout<<"... ";
+    for(size_t i = size-items_to_print; i < size; i++) {
+      std::cout<<array[i]<<" ";
+    }
+  }
+  std::cout<<"size="<<size<<std::endl;
+}
+
+void print_array(size_t* array, size_t size, size_t items_to_print = 5) {
   if (size <= items_to_print*2) {
     for(size_t i = 0; i<size; i++) {
       std::cout<<array[i]<<" ";
@@ -66,7 +84,8 @@ int* square_selection_sort(int* array, size_t size) {
   size_t block_size = std::sqrt(size); // |B_i| in slides
   size_t num_blocks = std::sqrt(size); // m in slides
   assert( size == num_blocks*block_size); //TODO: change it, in general case not true
-  int* min_in_block = new int[num_blocks]; // g_i in slides
+  int* min_in_block = new int[num_blocks]; // g_1, ..., g_m in slides
+  size_t* min_index_in_block = new size_t[num_blocks];
 
   // step2: find minimums in blocks
   for (size_t i = 0; i < num_blocks; i++) {
@@ -74,16 +93,31 @@ int* square_selection_sort(int* array, size_t size) {
     size_t block_start = i*block_size;
     size_t index;
     min_in_block[i] = find_min(array + block_start, block_size, index );
+    //std::cout<<"in block "<<i<<" min is "<<min_in_block[i]<<" and index is "<<index<<std::endl;
+    min_index_in_block[i] = index + block_start;
   }
   //print_array(min_in_block, num_blocks);
+  //print_array(min_index_in_block, num_blocks);
 
   //step 3: find min of mins
-  size_t global_min_index;
-  int global_min = find_min(min_in_block, num_blocks, global_min_index);
+  size_t global_min_index; // i in slides
+  int global_min = find_min(min_in_block, num_blocks, global_min_index); // g_i in slides
 
   //std::cout<<"global min = "<<global_min<<" in position "<<global_min_index<<std::endl;
 
+  //step 4: move minimum to sorted, remove it from starting array, replace with new minimum
+  sorted[0] = global_min;
 
+  size_t index_of_min = min_index_in_block[global_min_index];
+  array[index_of_min] = INT_MAX; // replace with max possible value - it will not become new minimum
+
+  size_t block_start = global_min_index*block_size;
+  size_t index;
+  min_in_block[global_min_index] = find_min(array + block_start, block_size, index );
+  min_index_in_block[global_min_index] = index + block_start;
+
+  print_array(array, size);
+  print_array(sorted, size);
 
 
 
@@ -107,7 +141,7 @@ int main() {
   std::cout<<size<<std::endl;
 
   //[3, 7, 12, 1, 8, 2, 5, 123, 1, 42]
-  int array2[] = {3, 7, 12, 1, 8, 2, 5, 123, 1, 42};
+  int array2[] = {-3, 7, 12, 1, 8, 2, 5, 123, 1, 42};
   size_t size2 = (sizeof array2) / (sizeof array2[0]);
   std::cout<<size2<<std::endl;
   size_t min_index=0;
