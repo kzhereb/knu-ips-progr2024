@@ -61,20 +61,29 @@ int find_min_subarray(int *arr, size_t start, size_t end, size_t &index) {
 
 int* square_selection_sort(int* array, size_t size) {
   int* sorted = new int[size];
+
+  //step 1: divide into blocks of same size
   size_t block_size = std::sqrt(size); // |B_i| in slides
   size_t num_blocks = std::sqrt(size); // m in slides
   assert( size == num_blocks*block_size); //TODO: change it, in general case not true
   int* min_in_block = new int[num_blocks]; // g_i in slides
 
+  // step2: find minimums in blocks
   for (size_t i = 0; i < num_blocks; i++) {
     //int min_value = ???
     size_t block_start = i*block_size;
     size_t index;
     min_in_block[i] = find_min(array + block_start, block_size, index );
-
   }
+  //print_array(min_in_block, num_blocks);
 
-  print_array(min_in_block, num_blocks);
+  //step 3: find min of mins
+  size_t global_min_index;
+  int global_min = find_min(min_in_block, num_blocks, global_min_index);
+
+  //std::cout<<"global min = "<<global_min<<" in position "<<global_min_index<<std::endl;
+
+
 
 
 
@@ -98,7 +107,7 @@ int main() {
   std::cout<<size<<std::endl;
 
   //[3, 7, 12, 1, 8, 2, 5, 123, 1, 42]
-  int array2[] = {-3, 7, 12, 1, 8, 2, 5, 123, 1, 42};
+  int array2[] = {3, 7, 12, 1, 8, 2, 5, 123, 1, 42};
   size_t size2 = (sizeof array2) / (sizeof array2[0]);
   std::cout<<size2<<std::endl;
   size_t min_index=0;
