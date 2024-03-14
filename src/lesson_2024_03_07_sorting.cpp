@@ -99,25 +99,27 @@ int* square_selection_sort(int* array, size_t size) {
   //print_array(min_in_block, num_blocks);
   //print_array(min_index_in_block, num_blocks);
 
-  //step 3: find min of mins
-  size_t global_min_index; // i in slides
-  int global_min = find_min(min_in_block, num_blocks, global_min_index); // g_i in slides
+  for (size_t i = 0; i < size; i++ ) { // step 5 - repeat steps 3 and 4 for all items
+    //step 3: find min of mins
+    size_t global_min_index; // i in slides
+    int global_min = find_min(min_in_block, num_blocks, global_min_index); // g_i in slides
 
-  //std::cout<<"global min = "<<global_min<<" in position "<<global_min_index<<std::endl;
+    //std::cout<<"global min = "<<global_min<<" in position "<<global_min_index<<std::endl;
 
-  //step 4: move minimum to sorted, remove it from starting array, replace with new minimum
-  sorted[0] = global_min;
+    //step 4: move minimum to sorted, remove it from starting array, replace with new minimum
+    sorted[i] = global_min;
 
-  size_t index_of_min = min_index_in_block[global_min_index];
-  array[index_of_min] = INT_MAX; // replace with max possible value - it will not become new minimum
+    size_t index_of_min = min_index_in_block[global_min_index];
+    array[index_of_min] = INT_MAX; // replace with max possible value - it will not become new minimum
 
-  size_t block_start = global_min_index*block_size;
-  size_t index;
-  min_in_block[global_min_index] = find_min(array + block_start, block_size, index );
-  min_index_in_block[global_min_index] = index + block_start;
+    size_t block_start = global_min_index*block_size;
+    size_t index;
+    min_in_block[global_min_index] = find_min(array + block_start, block_size, index );
+    min_index_in_block[global_min_index] = index + block_start;
 
-  print_array(array, size);
-  print_array(sorted, size);
+    //print_array(array, size);
+    //print_array(sorted, size);
+  }
 
 
 
@@ -159,7 +161,9 @@ int main() {
   min_value = find_min(array2+4, 4 /*7+1-4*/, min_index);
   std::cout<<"Min item in subarray using find_min "<<min_value<<" at position "<<min_index+4<<std::endl;
 
-  square_selection_sort(array2, 9); // ignore last item, we need size that is full square
+  int* sorted = square_selection_sort(array2, 9); // ignore last item, we need size that is full square
+  print_array(sorted, 9);
+
 
   return 0;
 }
