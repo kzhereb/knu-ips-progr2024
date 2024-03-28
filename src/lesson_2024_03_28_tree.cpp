@@ -31,9 +31,21 @@ void print_tree(TreeNode* root) {
   std::cout<<")";
 }
 
+void delete_tree(TreeNode*& root) {
+  for(TreeNode*& child: root->children) {
+    delete_tree(child);
+  }
+  delete root;
+  root = nullptr;
+}
 
-int main() {
+void remove_subtree_by_value(TreeNode*& root, int value) {
+  if (root->value == value) {
 
+  }
+}
+
+TreeNode* create_demo_tree() {
   TreeNode* root = new TreeNode(1);
   root->children.push_back(new TreeNode(2));
   TreeNode* child = new TreeNode(3);
@@ -43,8 +55,24 @@ int main() {
   child = new TreeNode(4);
   child->children.push_back(new TreeNode(7));
   root->children.push_back(child);
+  return root;
+}
 
+void check_memory_leaks() {
+  for(size_t i = 0; i<1e6; i++) {
+    TreeNode* root = create_demo_tree();
+    delete_tree(root);
+  }
+  while(true) {}
+}
+
+int main() {
+
+  TreeNode* root = create_demo_tree();
   print_tree(root);
+  std::cout<<std::endl;
+
+  check_memory_leaks();
 
   return 0;
 }
