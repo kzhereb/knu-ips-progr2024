@@ -22,6 +22,7 @@ struct TreeNode {
 void print_tree(TreeNode* root) {
   assert(root!=nullptr);
   std::cout<<root->value;
+  if (root->children.empty()) {return;}
   std::cout<<"(";
   for(TreeNode* child: root->children) {
     print_tree(child);
