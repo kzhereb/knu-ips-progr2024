@@ -6,7 +6,9 @@
  */
 
 #include <vector>
+#include <algorithm>
 #include <iostream>
+
 #include <cassert>
 
 namespace lesson_2024_03_28_tree {
@@ -41,8 +43,15 @@ void delete_tree(TreeNode*& root) {
 
 void remove_subtree_by_value(TreeNode*& root, int value) {
   if (root->value == value) {
-
+    delete_tree(root);
+    assert(root==nullptr);
+    return;
   }
+  for(TreeNode*& child: root->children){
+    remove_subtree_by_value(child, value);
+  }
+  //erase-remove idiom (or use C++ 20 erase/erase_if)
+  root->children.erase(std::remove(root->children.begin(), root->children.end(), nullptr), root->children.end());
 }
 
 TreeNode* create_demo_tree() {
@@ -72,7 +81,10 @@ int main() {
   print_tree(root);
   std::cout<<std::endl;
 
-  check_memory_leaks();
+  remove_subtree_by_value(root, 3);
+  print_tree(root);
+
+  //check_memory_leaks();
 
   return 0;
 }
