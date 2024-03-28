@@ -81,9 +81,13 @@ int* square_selection_sort(int* array, size_t size) {
   int* sorted = new int[size];
 
   //step 1: divide into blocks of same size
-  size_t block_size = std::sqrt(size); // |B_i| in slides
-  size_t num_blocks = std::sqrt(size); // m in slides
-  assert( size == num_blocks*block_size); //TODO: change it, in general case not true
+  size_t block_size = std::round(std::sqrt(size)); // |B_i| in slides
+  size_t num_blocks = std::ceil(std::sqrt(size)); // m in slides
+
+  assert( size <= num_blocks*block_size); //original array should fit in all blocks, maybe with last block not full
+  assert(num_blocks >= block_size); // num_blocks and block_size either equal (for full square), or num_blocks larger by 1
+  assert(num_blocks - block_size <= 1);
+
   int* min_in_block = new int[num_blocks]; // g_1, ..., g_m in slides
   size_t* min_index_in_block = new size_t[num_blocks];
 
@@ -91,8 +95,13 @@ int* square_selection_sort(int* array, size_t size) {
   for (size_t i = 0; i < num_blocks; i++) {
     //int min_value = ???
     size_t block_start = i*block_size;
+    size_t current_block_size = block_size;
+    if (i == num_blocks-1) {
+      current_block_size = size - (num_blocks-1)*block_size;
+    }
+
     size_t index;
-    min_in_block[i] = find_min(array + block_start, block_size, index );
+    min_in_block[i] = find_min(array + block_start, current_block_size, index );
     //std::cout<<"in block "<<i<<" min is "<<min_in_block[i]<<" and index is "<<index<<std::endl;
     min_index_in_block[i] = index + block_start;
   }
@@ -113,8 +122,12 @@ int* square_selection_sort(int* array, size_t size) {
     array[index_of_min] = INT_MAX; // replace with max possible value - it will not become new minimum
 
     size_t block_start = global_min_index*block_size;
+    size_t current_block_size = block_size;
+    if (global_min_index == num_blocks-1) {
+      current_block_size = size - (num_blocks-1)*block_size;
+    }
     size_t index;
-    min_in_block[global_min_index] = find_min(array + block_start, block_size, index );
+    min_in_block[global_min_index] = find_min(array + block_start, current_block_size, index );
     min_index_in_block[global_min_index] = index + block_start;
 
     //print_array(array, size);
@@ -134,6 +147,18 @@ void array_syntax_demo(int array2[]) {
   assert(*(1 + array2) == 1[array2]);
   assert(array2[1] == 1[array2]);
   std::cout << array2[2] << " " << 2[array2] << std::endl; // never do this in real code :)
+}
+
+void check_square_sizes() {
+  for(size_t size=0; size<100; size++) {
+    size_t block_size = std::round(std::sqrt(size)); // |B_i| in slides
+    size_t num_blocks = std::ceil(std::sqrt(size)); // m in slides
+
+    assert( size <= num_blocks*block_size); //original array should fit in all blocks, maybe with last block not full
+    assert(num_blocks >= block_size); // num_blocks and block_size either equal (for full square), or num_blocks larger by 1
+    assert(num_blocks - block_size <= 1);
+    std::cout<<"size="<<size<<", num_blocks="<<num_blocks<<", block_size="<<block_size<<",num_blocks*block_size="<<num_blocks*block_size<<std::endl;
+  }
 }
 
 int main() {
@@ -161,9 +186,14 @@ int main() {
   min_value = find_min(array2+4, 4 /*7+1-4*/, min_index);
   std::cout<<"Min item in subarray using find_min "<<min_value<<" at position "<<min_index+4<<std::endl;
 
-  int* sorted = square_selection_sort(array2, 9); // ignore last item, we need size that is full square
-  print_array(sorted, 9);
+  //int* sorted = square_selection_sort(array2, 9); // ignore last item, we need size that is full square
+  //print_array(sorted, 9);
 
+  //check_square_sizes();
+
+  std::cout<<"sorting array of size "<<size2 <<" (not a full square)"<<std::endl;
+  int* sorted = square_selection_sort(array2, size2);
+  print_array(sorted, size2);
 
   return 0;
 }
