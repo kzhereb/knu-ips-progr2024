@@ -5,7 +5,7 @@
  *      Author: KZ
  */
 
-#define current_ns lesson_2024_03_07_sorting
+#define current_ns lesson_2024_03_28_tree
 
 namespace current_ns {
   int main();
