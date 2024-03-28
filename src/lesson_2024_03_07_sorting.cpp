@@ -77,8 +77,12 @@ int find_min_subarray(int *arr, size_t start, size_t end, size_t &index) {
   return min_value;
 }
 
-int* square_selection_sort(int* array, size_t size) {
+int* square_selection_sort(int* input_array, size_t size) {
   int* sorted = new int[size];
+  int* array = new int[size];
+  for(size_t i = 0; i< size; i++) {
+    array[i] = input_array[i];
+  }
 
   //step 1: divide into blocks of same size
   size_t block_size = std::round(std::sqrt(size)); // |B_i| in slides
@@ -137,6 +141,7 @@ int* square_selection_sort(int* array, size_t size) {
 
 
   //print_array(sorted, size);
+  delete [] array;
   return sorted;
 }
 
@@ -186,14 +191,20 @@ int main() {
   min_value = find_min(array2+4, 4 /*7+1-4*/, min_index);
   std::cout<<"Min item in subarray using find_min "<<min_value<<" at position "<<min_index+4<<std::endl;
 
-  //int* sorted = square_selection_sort(array2, 9); // ignore last item, we need size that is full square
-  //print_array(sorted, 9);
+  int* sorted = square_selection_sort(array2, 9); // ignore last item, we need size that is full square
+  print_array(sorted, 9);
 
   //check_square_sizes();
 
   std::cout<<"sorting array of size "<<size2 <<" (not a full square)"<<std::endl;
-  int* sorted = square_selection_sort(array2, size2);
+  sorted = square_selection_sort(array2, size2);
   print_array(sorted, size2);
+
+  std::cout<<"sorting array of size "<<8 <<" (not a full square)"<<std::endl;
+  sorted = square_selection_sort(array2, 8);
+  print_array(sorted, 8);
+
+  print_array(array2, size2);
 
   return 0;
 }
