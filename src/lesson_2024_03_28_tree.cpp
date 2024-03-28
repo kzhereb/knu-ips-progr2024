@@ -26,7 +26,7 @@ void print_tree(TreeNode* root) {
   std::cout<<"(";
   for(TreeNode* child: root->children) {
     print_tree(child);
-    std::cout<<", ";
+    std::cout<<" ";
   }
   std::cout<<")";
 }
