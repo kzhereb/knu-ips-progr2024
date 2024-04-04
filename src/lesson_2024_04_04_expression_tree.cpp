@@ -8,6 +8,7 @@
 
 #include <string>
 #include <iostream>
+#include <map>
 #include <cassert>
 
 namespace lesson_2024_04_04_expression_tree {
@@ -65,11 +66,35 @@ TreeNode* create_demo_tree() {
 
 }
 
+double calculate_value(TreeNode* root, std::map<std::string, int> variable_values) {
+  assert(root!=nullptr);
+  if (root->type == Operation) {
+    double left_value = calculate_value(root->left, variable_values);
+    double right_value = calculate_value(root->right, variable_values);
+    if (root->value == "+") { return left_value + right_value;}
+    if (root->value == "-") { return left_value - right_value;}
+    if (root->value == "*") { return left_value * right_value;}
+    if (root->value == "/") { return left_value / right_value;}
+  }
+  if (root->type == Constant) {
+    return std::stod(root->value); // converts string to double
+  }
+  if (root->type == Variable) {
+    return variable_values[root->value];
+  }
+  assert(false); // should not reach this
+}
+
 
 
 int main() {
   TreeNode* root = create_demo_tree();
   print_tree(root);
+  std::cout<<std::endl;
+
+  double result = calculate_value(root, { {"x", 2}, {"y", 1} });
+  std::cout<<"value of expression is "<<result<<std::endl;
+
   return 0;
 }
 }
