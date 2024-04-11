@@ -226,6 +226,16 @@ int* square_selection_sort(int* array, size_t size) {
     size_t global_min_index; // i in slides
     int global_min = find_min(min_in_block, num_blocks, global_min_index); // g_i in slides
 
+//    // for debug purposes
+//    if (global_min >= 1000) {
+//      std::cerr<<"wrong min value found! " << global_min<<std::endl;
+//      print_array(min_in_block, num_blocks, 10);
+//      std::cout<<"global_min_index = " <<global_min_index<<std::endl;
+//      print_array(array, size, size);
+//    } else {
+//      print_array(min_in_block, num_blocks, 10);
+//    }
+
     //std::cout<<"global min = "<<global_min<<" in position "<<global_min_index<<std::endl;
 
     //step 4: move minimum to sorted, remove it from starting array, replace with new minimum
@@ -242,11 +252,11 @@ int* square_selection_sort(int* array, size_t size) {
     }
     size_t index;
     min_in_block[global_min_index] = find_next_min(array + block_start, current_block_size,
-                                                    global_min, index_of_min, index );
+                                                    global_min, index_of_min - block_start, index );
     min_index_in_block[global_min_index] = index + block_start;
 
     //print_array(array, size);
-    //print_array(sorted, size);
+    //print_array(sorted, size,10);
   }
 
 
