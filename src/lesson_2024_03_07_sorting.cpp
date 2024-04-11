@@ -344,7 +344,7 @@ int main() {
   size_t large_size = 1e5;
   int* large_array = generate_random_array(large_size);
   {
-    Benchmark bm("square_selection_sort");
+    BenchmarkMax bm("square_selection_sort");
 
     std::cout<<"Before sorting:"<<std::endl;
     print_array(large_array, large_size);
@@ -356,7 +356,7 @@ int main() {
   }
 
   {
-    Benchmark bm("square_selection_sort_copy");
+    BenchmarkMax bm("square_selection_sort_copy");
 
     std::cout<<"Before sorting:"<<std::endl;
     print_array(large_array, large_size);
