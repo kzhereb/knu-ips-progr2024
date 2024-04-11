@@ -48,6 +48,16 @@ void print_array(size_t* array, size_t size, size_t items_to_print = 5) {
   std::cout<<"size="<<size<<std::endl;
 }
 
+int* generate_random_array(size_t size, int max_value=1000) {
+  assert(max_value > 0);
+  srand(0);
+  int* result = new int[size];
+  for(size_t i=0; i<size; i++) {
+    result[i] = rand() % max_value;
+  }
+  return result;
+}
+
 // returns pair: min_value, index
 //std::pair<int, size_t> find_min(int* array, size_t size)
 
@@ -315,7 +325,14 @@ int main() {
   std::cout<<"Virtual memory " << get_current_virtual_memory() <<
       ", physical memory "<< get_current_physical_memory() <<std::endl;
 
-  check_memory_leaks();
+  //check_memory_leaks();
+  size_t large_size = 1e5;
+  int* large_array = generate_random_array(large_size);
+  std::cout<<"Large array:"<<std::endl;
+  print_array(large_array, large_size);
+
+  std::cout<<"Virtual memory " << get_current_virtual_memory() <<
+      ", physical memory "<< get_current_physical_memory() <<std::endl;
 
   return 0;
 }
