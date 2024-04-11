@@ -108,6 +108,7 @@ int find_min_subarray(int *arr, size_t start, size_t end, size_t &index) {
 }
 
 int* square_selection_sort_copy(int* input_array, size_t size) {
+  Benchmark* bm = new Benchmark("square_selection_sort_copy (inside)");
   int* sorted = new int[size];
   int* array = new int[size];
   for(size_t i = 0; i< size; i++) {
@@ -173,6 +174,7 @@ int* square_selection_sort_copy(int* input_array, size_t size) {
 
 
   //print_array(sorted, size);
+  delete bm;
   delete [] array;
   return sorted;
 }
@@ -337,6 +339,34 @@ int main() {
         ", physical memory "<< get_current_physical_memory() <<std::endl;
     std::cout<<"Expected memory usage: " << sizeof(int)*large_size <<" bytes"<<std::endl;
   }
+
+
+  size_t large_size = 1e5;
+  int* large_array = generate_random_array(large_size);
+  {
+    Benchmark bm("square_selection_sort");
+
+    std::cout<<"Before sorting:"<<std::endl;
+    print_array(large_array, large_size);
+
+    sorted = square_selection_sort(large_array, large_size);
+
+    std::cout<<"After sorting:"<<std::endl;
+    print_array(sorted, large_size);
+  }
+
+  {
+    Benchmark bm("square_selection_sort_copy");
+
+    std::cout<<"Before sorting:"<<std::endl;
+    print_array(large_array, large_size);
+
+    sorted = square_selection_sort_copy(large_array, large_size);
+
+    std::cout<<"After sorting:"<<std::endl;
+    print_array(sorted, large_size);
+  }
+
   return 0;
 }
 
