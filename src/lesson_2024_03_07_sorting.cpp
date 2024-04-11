@@ -326,14 +326,17 @@ int main() {
       ", physical memory "<< get_current_physical_memory() <<std::endl;
 
   //check_memory_leaks();
-  size_t large_size = 1e5;
-  int* large_array = generate_random_array(large_size);
-  std::cout<<"Large array:"<<std::endl;
-  print_array(large_array, large_size);
+  {
+    Benchmark bm("large_array");
+    size_t large_size = 3e5;
+    int* large_array = generate_random_array(large_size);
+    std::cout<<"Large array:"<<std::endl;
+    print_array(large_array, large_size);
 
-  std::cout<<"Virtual memory " << get_current_virtual_memory() <<
-      ", physical memory "<< get_current_physical_memory() <<std::endl;
-
+    std::cout<<"Virtual memory " << get_current_virtual_memory() <<
+        ", physical memory "<< get_current_physical_memory() <<std::endl;
+    std::cout<<"Expected memory usage: " << sizeof(int)*large_size <<" bytes"<<std::endl;
+  }
   return 0;
 }
 
