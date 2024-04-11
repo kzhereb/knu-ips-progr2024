@@ -5,6 +5,8 @@
  *      Author: KZ
  */
 
+#include "benchmark.h"
+
 #include <iostream>
 #include <cmath>
 #include <cassert>
@@ -254,7 +256,23 @@ void check_square_sizes() {
   }
 }
 
+void check_memory_leaks() {
+  std::cout<<"Virtual memory " << get_current_virtual_memory() <<
+        ", physical memory "<< get_current_physical_memory() <<std::endl;
+  int* array = new int[int(1e6)];
+  print_array(array, 1e6);
+  std::cout<<"Virtual memory " << get_current_virtual_memory() <<
+        ", physical memory "<< get_current_physical_memory() <<std::endl;
+  delete [] array;
+  std::cout<<"Virtual memory " << get_current_virtual_memory() <<
+        ", physical memory "<< get_current_physical_memory() <<std::endl;
+  while(true);
+
+}
+
 int main() {
+  std::cout<<"Virtual memory " << get_current_virtual_memory() <<
+      ", physical memory "<< get_current_physical_memory() <<std::endl;
   int* array = new int[100];
   print_array(array, 100);
   size_t size = (sizeof array) / (sizeof array[0]);
@@ -293,6 +311,11 @@ int main() {
   print_array(sorted, 8);
 
   print_array(array2, size2);
+
+  std::cout<<"Virtual memory " << get_current_virtual_memory() <<
+      ", physical memory "<< get_current_physical_memory() <<std::endl;
+
+  check_memory_leaks();
 
   return 0;
 }
