@@ -6,8 +6,23 @@
  */
 
 #include <iostream>
+#include <vector>
+#include <cassert>
 
 namespace lesson_2024_04_18_bitvector {
+
+const size_t MAX_BITVECTOR_SIZE = sizeof(unsigned) *8;
+
+struct BinaryVectorGraph {
+  std::vector<unsigned> edges_matrix; // in binary format, each row of matrix stored as unsigned
+
+  BinaryVectorGraph(size_t vertex_count) : edges_matrix(vertex_count) {
+    assert(vertex_count <= MAX_BITVECTOR_SIZE);
+    assert(edges_matrix.size() == vertex_count);
+  }
+};
+
+
 
 void demo_number_representation() {
   unsigned decimal = 15;
@@ -22,7 +37,8 @@ void demo_number_representation() {
 }
 
 int main() {
-  demo_number_representation();
+  //demo_number_representation();
+  BinaryVectorGraph graph(5);
   return 0;
 }
 
