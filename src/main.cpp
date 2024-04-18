@@ -5,7 +5,7 @@
  *      Author: KZ
  */
 
-#define current_ns lesson_2024_03_07_sorting
+#define current_ns lesson_2024_04_18_bitvector
 
 namespace current_ns {
   int main();
