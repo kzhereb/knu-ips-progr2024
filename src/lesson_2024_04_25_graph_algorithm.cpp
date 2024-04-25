@@ -7,11 +7,15 @@
 
 #include <iostream>
 #include <vector>
+#include <algorithm>
 #include <cassert>
+#include <climits>
 
 namespace lesson_2024_04_25_graph_algorithm {
 
 typedef std::vector<std::vector<int>> Matrix;
+
+const int INFINITY = INT_MAX/2; // it should not overflow when adding two values
 
 struct MatrixGraph {
   size_t num_vertices;
@@ -22,6 +26,8 @@ struct MatrixGraph {
     assert(weight_matrix.size() == num_vertices);
     for(size_t i = 0; i < num_vertices; i++) {
       weight_matrix[i].resize(num_vertices);
+      std::fill(weight_matrix[i].begin(), weight_matrix[i].end(), INFINITY);
+      weight_matrix[i][i] = 0;
       assert(weight_matrix[i].size() == num_vertices);
     }
   }
@@ -41,10 +47,27 @@ void add_edge(MatrixGraph& graph, size_t from, size_t to, int weight, int offset
 void print_matrix(const Matrix& matrix) {
   for(size_t i=0; i<matrix.size(); i++) {
     for(size_t j=0; j<matrix[i].size(); j++) {
-      std::cout<< matrix[i][j] << " ";
+      if (matrix[i][j] == INFINITY) {
+        std::cout<<"- ";
+      } else {
+        std::cout<< matrix[i][j] << " ";
+      }
     }
     std::cout<<std::endl;
   }
+}
+
+Matrix all_shortest_paths_Floyd(const MatrixGraph& graph) {
+  Matrix result = graph.weight_matrix;
+  for(size_t k = 0; k < graph.num_vertices; k++ ) {
+    for(size_t i = 0; i < graph.num_vertices; i++ ) {
+      for(size_t j = 0; j < graph.num_vertices; j++ ) {
+        result[i][j] = std::min({result[i][j], result[i][k] + result[k][j], INFINITY });
+      }
+    }
+  }
+
+  return result;
 }
 
 
@@ -60,6 +83,10 @@ int main() {
   add_edge(graph, 4, 5, 8, 1);
 
   print_matrix(graph.weight_matrix);
+
+  std::cout<<"finding all shortest paths"<<std::endl;
+  Matrix shortest_paths = all_shortest_paths_Floyd(graph);
+  print_matrix(shortest_paths);
   return 0;
 }
 }
