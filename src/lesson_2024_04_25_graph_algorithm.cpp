@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <vector>
+#include <queue>
 #include <algorithm>
 #include <cassert>
 #include <climits>
@@ -44,18 +45,33 @@ void add_edge(MatrixGraph& graph, size_t from, size_t to, int weight, int offset
   graph.weight_matrix[to][from] = weight;
 }
 
-void print_matrix(const Matrix& matrix) {
-  for(size_t i=0; i<matrix.size(); i++) {
-    for(size_t j=0; j<matrix[i].size(); j++) {
-      if (matrix[i][j] == INFINITY) {
+void print_vector(const std::vector<int>& vector) {
+
+    for(size_t j=0; j<vector.size(); j++) {
+      if (vector[j] == INFINITY) {
         std::cout<<"- ";
       } else {
-        std::cout<< matrix[i][j] << " ";
+        std::cout<< vector[j] << " ";
       }
     }
     std::cout<<std::endl;
+
+}
+
+void print_matrix(const Matrix& matrix) {
+  for(size_t i=0; i<matrix.size(); i++) {
+    print_vector(matrix[i]);
+//    for(size_t j=0; j<matrix[i].size(); j++) {
+//      if (matrix[i][j] == INFINITY) {
+//        std::cout<<"- ";
+//      } else {
+//        std::cout<< matrix[i][j] << " ";
+//      }
+//    }
+//    std::cout<<std::endl;
   }
 }
+
 
 Matrix all_shortest_paths_Floyd(const MatrixGraph& graph) {
   Matrix result = graph.weight_matrix;
@@ -66,6 +82,27 @@ Matrix all_shortest_paths_Floyd(const MatrixGraph& graph) {
       }
     }
   }
+
+  return result;
+}
+
+std::vector<int> shortest_paths_from_vertex_Dijkstra(const MatrixGraph& graph, size_t from) {
+  std::vector<int> result(graph.num_vertices, INFINITY);
+  result[from] = 0;
+  std::queue<size_t> visited;
+  visited.push(from);
+  while (!visited.empty()) {
+    size_t current = visited.front();
+    visited.pop();
+    for(size_t i = 0; i < graph.num_vertices; i++) {
+      if (i == current) { continue;} // same vertex
+      if (graph.weight_matrix[current][i] == INFINITY) { continue;} // no edge
+      if (result[i] < INFINITY) { continue; } // already processed
+      result[i] = result[current] + graph.weight_matrix[current][i];
+      visited.push(i);
+    }
+  }
+
 
   return result;
 }
@@ -87,6 +124,10 @@ int main() {
   std::cout<<"finding all shortest paths"<<std::endl;
   Matrix shortest_paths = all_shortest_paths_Floyd(graph);
   print_matrix(shortest_paths);
+
+  std::cout<<"finding shortest paths from vertex 0"<<std::endl;
+  std::vector<int> shortest_from_0 = shortest_paths_from_vertex_Dijkstra(graph,0);
+  print_vector(shortest_from_0);
   return 0;
 }
 }
