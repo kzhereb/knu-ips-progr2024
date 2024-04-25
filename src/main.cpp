@@ -5,7 +5,7 @@
  *      Author: KZ
  */
 
-#define current_ns lesson_2024_04_18_bitvector
+#define current_ns lesson_2024_04_25_graph_algorithm
 
 namespace current_ns {
   int main();
