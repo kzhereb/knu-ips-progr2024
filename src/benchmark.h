@@ -34,6 +34,15 @@ struct Benchmark {
   }
 };
 
+inline long long memory_difference(size_t start, size_t end) {
+  if (end >= start) {
+    return end-start;
+  } else {
+    return -(start-end);
+  }
+
+}
+
 struct BenchmarkMax {
   size_t start_virtual_memory;
   size_t start_physical_memory;
@@ -67,17 +76,17 @@ struct BenchmarkMax {
   }
 
   void run() {
-    while(is_running) {
+    do {
       measure();
-    }
+    } while(is_running); // need to run measure at least once
   }
 
   ~BenchmarkMax() {
     is_running = false;
     measurement_thread.join();
 
-    std::cout<<"BenchmarkMax "<<name<<": virtual "<< max_virtual_memory - start_virtual_memory <<
-        " bytes, physical " << max_physical_memory - start_physical_memory << " bytes"<< std::endl;
+    std::cout<<"BenchmarkMax "<<name<<": virtual "<< memory_difference(start_virtual_memory, max_virtual_memory) <<
+        " bytes, physical " << memory_difference(start_physical_memory, max_physical_memory) << " bytes"<< std::endl;
   }
 
 };
