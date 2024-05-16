@@ -61,6 +61,19 @@ SparseList list_to_sparse_list(std::list<int> input, int default_value = 0) {
   return result;
 }
 
+int find_first_default(SparseList list) {
+  Node* current = list.start;
+  if (current->position != 0) { return 0; } // first item is default
+  int prev_position = current->position;
+  current = current->next;
+  while(current) {
+    if (current->position - prev_position != 1) { return prev_position + 1; }
+    prev_position = current->position;
+    current = current->next;
+  }
+  return prev_position + 1;
+}
+
 void print(SparseList list) {
   Node* current = list.start;
   int index = 0;
@@ -102,6 +115,16 @@ int main(){
   SparseList list2 = list_to_sparse_list(input);
   print(list2);
   print_as_linked_list(list2);
+
+  std::cout<<"First default at position "<<find_first_default(list2)<<std::endl;
+
+  SparseList in_middle = list_to_sparse_list({1, 1, 0, 2, 0});
+  print(in_middle);
+  std::cout<<"First default at position "<<find_first_default(in_middle)<<std::endl;
+
+  SparseList at_end = list_to_sparse_list({1, 1, -1, 2, 0, 0});
+  print(at_end);
+  std::cout<<"First default at position "<<find_first_default(at_end)<<std::endl;
 
   return 0;
 }
