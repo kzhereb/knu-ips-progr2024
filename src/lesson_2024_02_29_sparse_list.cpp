@@ -76,6 +76,14 @@ void print(SparseList list) {
   std::cout << std::endl;
 }
 
+void print_as_linked_list(SparseList list) {
+  Node* current = list.start;
+  while (current) {
+    std::cout<< current->value << "["<<current->position<<"] ";
+    current = current->next;
+  }
+  std::cout<<std::endl;
+}
 
 
 int main(){
@@ -93,6 +101,7 @@ int main(){
   std::list<int> input {0, 1, 0, 0, 2, 0, 3, 0, 0, 0, 0, 0, 5};
   SparseList list2 = list_to_sparse_list(input);
   print(list2);
+  print_as_linked_list(list2);
 
   return 0;
 }
