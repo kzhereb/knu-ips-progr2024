@@ -6,6 +6,7 @@
  */
 
 #include <iostream>
+#include <list>
 #include <cassert>
 
 namespace lesson_2024_02_29_sparse_list {
@@ -46,6 +47,20 @@ void push_back(SparseList& list, int value, int position) {
 
 }
 
+SparseList list_to_sparse_list(std::list<int> input, int default_value = 0) {
+  SparseList result;
+  result.default_value = default_value;
+  //while(current!=nullptr)
+  int current_position = 0;
+  for(int value: input) {
+    if (value != default_value) {
+      push_back(result, value, current_position);
+    }
+    current_position++;
+  }
+  return result;
+}
+
 void print(SparseList list) {
   Node* current = list.start;
   int index = 0;
@@ -75,6 +90,9 @@ int main(){
 
   print(list);
 
+  std::list<int> input {0, 1, 0, 0, 2, 0, 3, 0, 0, 0, 0, 0, 5};
+  SparseList list2 = list_to_sparse_list(input);
+  print(list2);
 
   return 0;
 }

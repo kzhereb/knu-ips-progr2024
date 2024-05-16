@@ -5,7 +5,7 @@
  *      Author: KZ
  */
 
-#define current_ns lesson_2024_04_25_graph_algorithm
+#define current_ns lesson_2024_02_29_sparse_list
 
 namespace current_ns {
   int main();
