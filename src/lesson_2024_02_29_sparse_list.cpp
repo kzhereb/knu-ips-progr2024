@@ -24,18 +24,25 @@ struct Node {
 struct SparseList {
   Node* start;
   Node* end;
+  int total_size;
   int default_value=0;
 
-  SparseList(Node* start = nullptr, Node* end = nullptr, int default_value = 0):
-    start(start), end(end), default_value(default_value) {}
+  SparseList(Node* start = nullptr, Node* end = nullptr, int total_size = 0, int default_value = 0):
+    start(start), end(end), total_size(total_size), default_value(default_value) {}
 };
 
+// adds item at given position, which should be at the end of list
+// value can be default, in this case list size is increased, but new node is not added
 void push_back(SparseList& list, int value, int position) {
-  if (position < 0) { return; }
-  if(list.end != nullptr && list.end->position > position) {
+  assert(position >= 0);
+  assert(position >= list.total_size);
+  if(list.end != nullptr) {
+    assert(list.end->position < position);
+  }
+  list.total_size = position + 1;
+  if (value == list.default_value) { // adding default value - no need to add node
     return;
   }
-
   Node* new_node = new Node(value, position, list.end);
   if (list.end == nullptr) {
     assert(new_node->prev == nullptr);
@@ -58,6 +65,7 @@ SparseList list_to_sparse_list(std::list<int> input, int default_value = 0) {
     }
     current_position++;
   }
+  result.total_size = input.size();
   return result;
 }
 
@@ -86,6 +94,9 @@ void print(SparseList list) {
     current = current->next;
     index++;
   }
+  for(int i = index; i < list.total_size; i++) {
+    std::cout<< list.default_value << " ";
+  }
   std::cout << std::endl;
 }
 
@@ -95,7 +106,7 @@ void print_as_linked_list(SparseList list) {
     std::cout<< current->value << "["<<current->position<<"] ";
     current = current->next;
   }
-  std::cout<<std::endl;
+  std::cout<<"total_size = "<<list.total_size<<std::endl;
 }
 
 
