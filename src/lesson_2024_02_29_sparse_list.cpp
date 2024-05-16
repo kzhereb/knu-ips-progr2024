@@ -69,6 +69,8 @@ SparseList list_to_sparse_list(std::list<int> input, int default_value = 0) {
   return result;
 }
 
+// returns position of first item with default value
+// if not found - returns -1
 int find_first_default(SparseList list) {
   Node* current = list.start;
   if (current->position != 0) { return 0; } // first item is default
@@ -78,6 +80,9 @@ int find_first_default(SparseList list) {
     if (current->position - prev_position != 1) { return prev_position + 1; }
     prev_position = current->position;
     current = current->next;
+  }
+  if (prev_position + 1 == list.total_size) {
+    return -1; // this means default value not found at all
   }
   return prev_position + 1;
 }
@@ -136,6 +141,10 @@ int main(){
   SparseList at_end = list_to_sparse_list({1, 1, -1, 2, 0, 0});
   print(at_end);
   std::cout<<"First default at position "<<find_first_default(at_end)<<std::endl;
+
+  SparseList no_defaults = list_to_sparse_list({1, 1, 2});
+  print(no_defaults);
+  std::cout<<"First default at position "<<find_first_default(no_defaults)<<std::endl;
 
   return 0;
 }
