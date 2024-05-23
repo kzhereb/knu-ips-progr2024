@@ -12,6 +12,17 @@
 
 namespace lesson_2024_05_23_expression_postfix {
 
+
+bool is_operator(char current) {
+  if (current == '-' || current == '/') { return true;}
+  return false;
+}
+
+bool less_precedence(char operator1, char operator2) {
+  if (operator1 == '-' && operator2 == '/') {return true;}
+  return false;
+}
+
 std::string infix_to_postfix(std::string expression) {
   std::string result;
   std::stack<char> operator_stack;
@@ -19,28 +30,16 @@ std::string infix_to_postfix(std::string expression) {
   for (char current: expression) {
     if (current <= '9' && current >= '0') {
       result += current;
-    } else if (current == '-') {
+    } else if (is_operator(current)) {
       while (!operator_stack.empty()) {
         char from_stack = operator_stack.top();
-        if (from_stack == '-') { // left associative
-          operator_stack.pop();
-          result += from_stack;
-        } else if (from_stack == '/') { // greater precedence
-          operator_stack.pop();
-          result += from_stack;
-        } else if (from_stack == '(') {
-          break; // no more operators for result
-        }
-      } // while there are suitable operators on stack
-      operator_stack.push(current);
-    } else if (current == '/') {
-      while (!operator_stack.empty()) {
-        char from_stack = operator_stack.top();
-        if (from_stack == '-') { // less precedence
-          break;
-        } else if (from_stack == '/') { // left associative
-          operator_stack.pop();
-          result += from_stack;
+        if (is_operator(from_stack)) {
+          if (less_precedence(from_stack, current)) {
+            break; //less precedence
+          } else { // greater precedence, or same precendence and left associative
+            operator_stack.pop();
+            result += from_stack;
+          }
         } else if (from_stack == '(') {
           break; // no more operators for result
         }
