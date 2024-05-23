@@ -36,7 +36,7 @@ std::string infix_to_postfix(std::string expression) {
         if (is_operator(from_stack)) {
           if (less_precedence(from_stack, current)) {
             break; //less precedence
-          } else { // greater precedence, or same precendence and left associative
+          } else { // greater precedence, or same precedence and left associative
             operator_stack.pop();
             result += from_stack;
           }
