@@ -5,7 +5,7 @@
  *      Author: KZ
  */
 
-#define current_ns lesson_2024_05_23_expression_postfix
+#define current_ns lesson_2024_05_30_binary_search_tree
 
 namespace current_ns {
   int main();
